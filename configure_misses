@@ -1,0 +1,15 @@
+Configure miss: rtkit-daemon.c:1336:25: warning: format not a string literal and no format arguments [-Wformat-security]
+
+Configure miss: rtkit-daemon.c:1361:25: warning: format not a string literal and no format arguments [-Wformat-security]
+
+Configure miss: rtkit-daemon.c:1366:25: warning: format not a string literal and no format arguments [-Wformat-security]
+
+Configure miss: rtkit-daemon.c:1371:25: warning: format not a string literal and no format arguments [-Wformat-security]
+
+Configure miss: rtkit-daemon.c:1388:25: warning: format not a string literal and no format arguments [-Wformat-security]
+
+Configure miss: rtkit-daemon.c:1413:25: warning: format not a string literal and no format arguments [-Wformat-security]
+
+Configure miss: rtkit-daemon.c:1418:25: warning: format not a string literal and no format arguments [-Wformat-security]
+
+Configure miss: rtkit-daemon.c:1423:25: warning: format not a string literal and no format arguments [-Wformat-security]
