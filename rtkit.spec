@@ -4,7 +4,7 @@
 #
 Name     : rtkit
 Version  : 0.11
-Release  : 1
+Release  : 2
 URL      : http://0pointer.de/public/rtkit-0.11.tar.xz
 Source0  : http://0pointer.de/public/rtkit-0.11.tar.xz
 Summary  : No detailed summary available
