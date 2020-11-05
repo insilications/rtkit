@@ -4,7 +4,7 @@
 #
 Name     : rtkit
 Version  : 0.11
-Release  : 2
+Release  : 3
 URL      : http://0pointer.de/public/rtkit-0.11.tar.xz
 Source0  : http://0pointer.de/public/rtkit-0.11.tar.xz
 Summary  : No detailed summary available
@@ -91,6 +91,7 @@ services components for the rtkit package.
 
 %prep
 %setup -q -n rtkit-0.11
+cd %{_builddir}/rtkit-0.11
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
@@ -99,24 +100,28 @@ services components for the rtkit package.
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-export LANG=C
-export SOURCE_DATE_EPOCH=1553800302
-export LDFLAGS="${LDFLAGS} -fno-lto"
+export LANG=C.UTF-8
+export SOURCE_DATE_EPOCH=1604603384
+export GCC_IGNORE_WERROR=1
+export CFLAGS="$CFLAGS -fno-lto "
+export FCFLAGS="$FFLAGS -fno-lto "
+export FFLAGS="$FFLAGS -fno-lto "
+export CXXFLAGS="$CXXFLAGS -fno-lto "
 %reconfigure --disable-static
 make  %{?_smp_mflags}
 
 %check
-export LANG=C
+export LANG=C.UTF-8
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-make VERBOSE=1 V=1 %{?_smp_mflags} check
+make %{?_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1553800302
+export SOURCE_DATE_EPOCH=1604603384
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/rtkit
-cp LICENSE %{buildroot}/usr/share/package-licenses/rtkit/LICENSE
+cp %{_builddir}/rtkit-0.11/LICENSE %{buildroot}/usr/share/package-licenses/rtkit/3117576320c22664b6f771dbd140b6eb73a024b9
 %make_install
 
 %files
@@ -138,7 +143,7 @@ cp LICENSE %{buildroot}/usr/share/package-licenses/rtkit/LICENSE
 
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/package-licenses/rtkit/LICENSE
+/usr/share/package-licenses/rtkit/3117576320c22664b6f771dbd140b6eb73a024b9
 
 %files man
 %defattr(0644,root,root,0755)
