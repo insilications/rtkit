@@ -1,2 +1,7 @@
 # This file contains recursive sources that require this package
+efl-dev
+enlightenment-dev
+gtk-vnc-dev
 pulseaudio
+pulseaudio-dev
+pulseaudio-dev32

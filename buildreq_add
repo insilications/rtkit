@@ -2,7 +2,6 @@
 # picked up automatically. One name per line, no whitespace.
 automake
 automake-dev
-builreq-meson
 dbus-dev
 gettext-bin
 libcap-dev

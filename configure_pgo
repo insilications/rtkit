@@ -1,1 +1,7 @@
- 
+-Ddbus_systemservicedir="/usr/share/dbus-1/system-services"
+-Ddbus_interfacedir="/usr/share/dbus-1/interfaces"
+-Ddbus_rulesdir="/usr/share/dbus-1/system.d"
+-Dpolkit_actiondir="/usr/share/polkit-1/actions"
+-Dsystemd_systemunitdir="/usr/lib/systemd/system"
+-Dlibsystemd=enabled
+-Dinstalled_tests=true
