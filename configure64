@@ -1,0 +1,7 @@
+-Ddbus_interfacedir
+-Ddbus_rulesdir
+-Ddbus_systemservicedir
+-Dlibsystemd=enabled
+-Dpolkit_actiondir
+-Dsystemd_systemunitdir
+-Dinstalled_tests=true
