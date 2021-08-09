@@ -5,3 +5,4 @@ gtk-vnc-dev
 pulseaudio
 pulseaudio-dev
 pulseaudio-dev32
+rtkit-tests

@@ -4,6 +4,7 @@ automake
 automake-dev
 dbus-dev
 gettext-bin
+gvim
 libcap-dev
 libcap-staticdev
 libtool
@@ -13,5 +14,7 @@ ninja
 pkg-config-dev
 polkit
 polkit-dev
+rtkit
+rtkit-data
+rtkit-services
 systemd-dev
-gvim

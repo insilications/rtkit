@@ -5,7 +5,7 @@
 %define keepstatic 1
 Name     : rtkit
 Version  : 0.13
-Release  : 4
+Release  : 5
 URL      : file:///aot/build/clearlinux/packages/rtkit/rtkit-v0.13.tar.gz
 Source0  : file:///aot/build/clearlinux/packages/rtkit/rtkit-v0.13.tar.gz
 Summary  : No detailed summary available
@@ -34,6 +34,9 @@ BuildRequires : pkgconfig(libsystemd)
 BuildRequires : pkgconfig(systemd)
 BuildRequires : polkit
 BuildRequires : polkit-dev
+BuildRequires : rtkit
+BuildRequires : rtkit-data
+BuildRequires : rtkit-services
 BuildRequires : sed
 BuildRequires : systemd-dev
 Patch1: 17.patch
@@ -110,7 +113,7 @@ unset https_proxy
 unset no_proxy
 export SSL_CERT_FILE=/var/cache/ca-certs/anchors/ca-certificates.crt
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1628500707
+export SOURCE_DATE_EPOCH=1628502436
 export GCC_IGNORE_WERROR=1
 ## altflags_pgo content
 ## pgo generate
@@ -234,12 +237,17 @@ fi
 
 %install
 DESTDIR=%{buildroot} ninja -C builddir install
+## install_append content
+install -dm 0755 %{buildroot}/usr/bin/ || :
+cp --archive %{buildroot}/usr/sbin/rtkitctl %{buildroot}/usr/bin/rtkitctl || :
+## install_append end
 
 %files
 %defattr(-,root,root,-)
 
 %files bin
 %defattr(-,root,root,-)
+/usr/bin/rtkitctl
 /usr/sbin/rtkitctl
 
 %files data

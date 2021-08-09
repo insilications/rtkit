@@ -1,0 +1,2 @@
+install -dm 0755 %{buildroot}/usr/bin/ || :
+cp --archive %{buildroot}/usr/sbin/rtkitctl %{buildroot}/usr/bin/rtkitctl || :
