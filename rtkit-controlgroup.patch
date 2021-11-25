@@ -11,4 +11,4 @@ index 3dfefa6..d0dc786 100644
 -ControlGroup=cpu:/
 -
  [Install]
- WantedBy=graphical.target
+ WantedBy=multi-user.target

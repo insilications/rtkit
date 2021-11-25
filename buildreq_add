@@ -6,7 +6,7 @@ dbus-dev
 gettext-bin
 gvim
 libcap-dev
-libcap-staticdev
+# libcap-staticdev
 libtool
 libtool-dev
 m4
