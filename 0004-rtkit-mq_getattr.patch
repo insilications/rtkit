@@ -1,0 +1,24 @@
+From 0c03fd85dd0397c2ad4bdb41a8d2535d50bfdff3 Mon Sep 17 00:00:00 2001
+From: Francisco Boni <boboniboni@gmail.com>
+Date: Wed, 24 Nov 2021 22:53:55 -0300
+Subject: [PATCH 4/4] rtkit-mq_getattr
+
+---
+ configure.ac | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/configure.ac b/configure.ac
+index 11fb7e7..7be5c0e 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -113,6 +113,7 @@ CC="$PTHREAD_CC"
+ AC_SEARCH_LIBS([sched_setscheduler], [rt])
+ AC_SEARCH_LIBS([mq_open], [rt])
+ AC_SEARCH_LIBS([cap_init], [cap])
++AC_SEARCH_LIBS([mq_getattr], [rt])
+ 
+ PKG_CHECK_MODULES(DBUS, dbus-1)
+ 
+-- 
+2.34.0
+
