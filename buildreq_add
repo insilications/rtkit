@@ -14,7 +14,7 @@ ninja
 pkg-config-dev
 polkit
 polkit-dev
-rtkit
-rtkit-data
-rtkit-services
+# rtkit
+# rtkit-data
+# rtkit-services
 systemd-dev
