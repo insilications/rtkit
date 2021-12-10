@@ -1,4 +1,0 @@
-0001-Actually-let-meson-use-pre-generated-introspection-f.patch
-0002-meson-fix-librt-find_library-check.patch
-0003-meson-actually-use-systemd_systemunitdir.patch
-0004-rtkit-mq_getattr.patch

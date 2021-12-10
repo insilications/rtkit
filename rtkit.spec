@@ -5,19 +5,15 @@
 %define keepstatic 1
 Name     : rtkit
 Version  : 0.13
-Release  : 501
+Release  : 503
 URL      : file:///aot/build/clearlinux/packages/rtkit/rtkit-v0.13.tar.gz
 Source0  : file:///aot/build/clearlinux/packages/rtkit/rtkit-v0.13.tar.gz
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : GPL-3.0 MIT
-Requires: rtkit-bin = %{version}-%{release}
-Requires: rtkit-data = %{version}-%{release}
-Requires: rtkit-libexec = %{version}-%{release}
-Requires: rtkit-man = %{version}-%{release}
-Requires: rtkit-services = %{version}-%{release}
 BuildRequires : automake
 BuildRequires : automake-dev
+BuildRequires : buildreq-meson
 BuildRequires : dbus-dev
 BuildRequires : gettext-bin
 BuildRequires : gvim
@@ -28,79 +24,21 @@ BuildRequires : m4
 BuildRequires : ninja
 BuildRequires : pkg-config-dev
 BuildRequires : pkgconfig(dbus-1)
+BuildRequires : pkgconfig(libsystemd)
 BuildRequires : pkgconfig(systemd)
 BuildRequires : polkit
 BuildRequires : polkit-dev
+BuildRequires : sed
 BuildRequires : systemd-dev
-Patch1: 0001-Actually-let-meson-use-pre-generated-introspection-f.patch
-Patch2: 0002-meson-fix-librt-find_library-check.patch
-Patch3: 0003-meson-actually-use-systemd_systemunitdir.patch
-Patch4: 0004-rtkit-mq_getattr.patch
 
 %description
 REALTIMEKIT Realtime Policy and Watchdog Daemon
 GIT:
 https://github.com/heftig/rtkit
 
-%package bin
-Summary: bin components for the rtkit package.
-Group: Binaries
-Requires: rtkit-data = %{version}-%{release}
-Requires: rtkit-libexec = %{version}-%{release}
-Requires: rtkit-services = %{version}-%{release}
-
-%description bin
-bin components for the rtkit package.
-
-
-%package data
-Summary: data components for the rtkit package.
-Group: Data
-
-%description data
-data components for the rtkit package.
-
-
-%package libexec
-Summary: libexec components for the rtkit package.
-Group: Default
-
-%description libexec
-libexec components for the rtkit package.
-
-
-%package man
-Summary: man components for the rtkit package.
-Group: Default
-
-%description man
-man components for the rtkit package.
-
-
-%package services
-Summary: services components for the rtkit package.
-Group: Systemd services
-
-%description services
-services components for the rtkit package.
-
-
-%package tests
-Summary: tests components for the rtkit package.
-Group: Default
-Requires: rtkit = %{version}-%{release}
-
-%description tests
-tests components for the rtkit package.
-
-
 %prep
 %setup -q -n rtkit
 cd %{_builddir}/rtkit
-%patch1 -p1
-%patch2 -p1
-%patch3 -p1
-%patch4 -p1
 
 %build
 unset http_proxy
@@ -108,10 +46,13 @@ unset https_proxy
 unset no_proxy
 export SSL_CERT_FILE=/var/cache/ca-certs/anchors/ca-certificates.crt
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1638012353
+export SOURCE_DATE_EPOCH=1639179006
 export GCC_IGNORE_WERROR=1
 ## altflags1 content
+## altflags1
+unset ASFLAGS
 export CFLAGS="-g3 -ggdb -O3 --param=lto-max-streaming-parallelism=16 -march=native -mtune=native -fgraphite-identity -Wall -Wl,--as-needed -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,--hash-style=gnu -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wno-error -mprefer-vector-width=256 -falign-functions=32 -flimit-function-alignment -fasynchronous-unwind-tables -fdevirtualize-at-ltrans -floop-nest-optimize -floop-block -fno-math-errno -fno-semantic-interposition -Wl,-Bsymbolic-functions -fno-stack-protector -fno-trapping-math -ftree-loop-distribute-patterns -ftree-loop-vectorize -ftree-slp-vectorize -ftree-vectorize -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -feliminate-unused-debug-types -fipa-pta -flto=auto -fno-plt -mtls-dialect=gnu2 -Wl,-sort-common -Wno-error -Wp,-D_REENTRANT -pipe -ffat-lto-objects -fPIC -fomit-frame-pointer -fexceptions -static-libstdc++ -static-libgcc -Wl,--build-id=sha1"
+export ASMFLAGS="-g3 -ggdb -O3 --param=lto-max-streaming-parallelism=16 -march=native -mtune=native -fgraphite-identity -Wall -Wl,--as-needed -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,--hash-style=gnu -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wno-error -mprefer-vector-width=256 -falign-functions=32 -flimit-function-alignment -fasynchronous-unwind-tables -fdevirtualize-at-ltrans -floop-nest-optimize -floop-block -fno-math-errno -fno-semantic-interposition -Wl,-Bsymbolic-functions -fno-stack-protector -fno-trapping-math -ftree-loop-distribute-patterns -ftree-loop-vectorize -ftree-slp-vectorize -ftree-vectorize -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -feliminate-unused-debug-types -fipa-pta -flto=auto -fno-plt -mtls-dialect=gnu2 -Wl,-sort-common -Wno-error -Wp,-D_REENTRANT -pipe -ffat-lto-objects -fPIC -fomit-frame-pointer -fexceptions -static-libstdc++ -static-libgcc -Wl,--build-id=sha1"
 ## -fno-tree-vectorize: disable -ftree-vectorize thus disable -ftree-loop-vectorize and -ftree-slp-vectorize -fopt-info-vec
 ## -Ofast -ffast-math
 ## -funroll-loops maybe dangerous
@@ -149,6 +90,8 @@ export CCACHE_BASEDIR=/builddir/build/BUILD
 #export CCACHE_DEBUG=true
 #export CCACHE_NODIRECT=true
 #
+export PKG_CONFIG_PATH="/usr/lib64/pkgconfig:/usr/share/pkgconfig"
+#
 export LD_LIBRARY_PATH="/usr/nvidia/lib64:/usr/nvidia/lib64/vdpau:/usr/nvidia/lib64/xorg/modules/drivers:/usr/nvidia/lib64/xorg/modules/extensions:/usr/local/cuda/lib64:/usr/lib64/haswell:/usr/lib64/haswell/pulseaudio:/usr/lib64/haswell/alsa-lib:/usr/lib64/haswell/gstreamer-1.0:/usr/lib64/haswell/pipewire-0.3:/usr/lib64/haswell/spa-0.2:/usr/lib64/dri:/usr/lib64/chromium:/usr/lib64:/usr/lib64/pulseaudio:/usr/lib64/alsa-lib:/usr/lib64/gstreamer-1.0:/usr/lib64/pipewire-0.3:/usr/lib64/spa-0.2:/usr/lib:/aot/intel/oneapi/compiler/latest/linux/compiler/lib/intel64_lin:/aot/intel/oneapi/compiler/latest/linux/lib:/aot/intel/oneapi/mkl/latest/lib/intel64:/aot/intel/oneapi/tbb/latest/lib/intel64/gcc4.8:/usr/share:/usr/lib64/wine:/usr/nvidia/lib32:/usr/nvidia/lib32/vdpau:/usr/lib32:/usr/lib32/wine"
 #
 export LIBRARY_PATH="/usr/nvidia/lib64:/usr/nvidia/lib64/vdpau:/usr/nvidia/lib64/xorg/modules/drivers:/usr/nvidia/lib64/xorg/modules/extensions:/usr/local/cuda/lib64:/usr/lib64/haswell:/usr/lib64/haswell/pulseaudio:/usr/lib64/haswell/alsa-lib:/usr/lib64/haswell/gstreamer-1.0:/usr/lib64/haswell/pipewire-0.3:/usr/lib64/haswell/spa-0.2:/usr/lib64/dri:/usr/lib64/chromium:/usr/lib64:/usr/lib64/pulseaudio:/usr/lib64/alsa-lib:/usr/lib64/gstreamer-1.0:/usr/lib64/pipewire-0.3:/usr/lib64/spa-0.2:/usr/lib:/aot/intel/oneapi/compiler/latest/linux/compiler/lib/intel64_lin:/aot/intel/oneapi/compiler/latest/linux/lib:/aot/intel/oneapi/mkl/latest/lib/intel64:/aot/intel/oneapi/tbb/latest/lib/intel64/gcc4.8:/usr/share:/usr/lib64/wine:/usr/nvidia/lib32:/usr/nvidia/lib32/vdpau:/usr/lib32:/usr/lib32/wine"
@@ -181,7 +124,7 @@ export LIBVA_DRIVERS_PATH=/usr/lib64/dri
 export GTK_RC_FILES=/etc/gtk/gtkrc
 export FONTCONFIG_PATH=/usr/share/defaults/fonts
 ## altflags1 end
-CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" LDFLAGS="$LDFLAGS" meson --libdir=lib64 --prefix=/usr --buildtype=plain -Ddefault_library=both  -Ddbus_systemservicedir="/usr/share/dbus-1/system-services" \
+CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" LDFLAGS="$LDFLAGS" LIBS="$LIBS" meson --libdir=lib64 --prefix=/usr --buildtype=plain -Ddefault_library=both  -Ddbus_systemservicedir="/usr/share/dbus-1/system-services" \
 -Ddbus_interfacedir="/usr/share/dbus-1/interfaces" \
 -Ddbus_rulesdir="/usr/share/dbus-1/system.d" \
 -Dpolkit_actiondir="/usr/share/polkit-1/actions" \
@@ -200,31 +143,3 @@ cp --archive %{buildroot}/usr/sbin/rtkitctl %{buildroot}/usr/bin/rtkitctl || :
 
 %files
 %defattr(-,root,root,-)
-
-%files bin
-%defattr(-,root,root,-)
-/usr/bin/rtkitctl
-/usr/sbin/rtkitctl
-
-%files data
-%defattr(-,root,root,-)
-/usr/share/dbus-1/interfaces/org.freedesktop.RealtimeKit1.xml
-/usr/share/dbus-1/system-services/org.freedesktop.RealtimeKit1.service
-/usr/share/dbus-1/system.d/org.freedesktop.RealtimeKit1.conf
-/usr/share/polkit-1/actions/org.freedesktop.RealtimeKit1.policy
-
-%files libexec
-%defattr(-,root,root,-)
-/usr/libexec/rtkit-daemon
-
-%files man
-%defattr(0644,root,root,0755)
-/usr/share/man/man8/rtkitctl.8
-
-%files services
-%defattr(-,root,root,-)
-/usr/lib/systemd/system/rtkit-daemon.service
-
-%files tests
-%defattr(-,root,root,-)
-/usr/libexec/installed-tests/rtkit/rtkit-test
