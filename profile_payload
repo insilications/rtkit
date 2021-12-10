@@ -24,6 +24,6 @@ export FONTCONFIG_PATH=/usr/share/defaults/fonts
 meson test --verbose --num-processes 1 -C builddir || :
 pushd builddir/
 #sudo ./rtkit-daemon &
-sudo ./rtkitctl --start
+#sudo ./rtkitctl --start
 ./rtkit-test || :
 popd

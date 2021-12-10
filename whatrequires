@@ -52,6 +52,7 @@ qt6base
 qtmultimedia
 qtwebengine
 rage
+rtkit-tests
 simplescreenrecorder
 sox
 supertuxkart
